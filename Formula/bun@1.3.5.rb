@@ -5,6 +5,11 @@ class BunAT135 < Formula
   sha256 "af96f357e90847fcb252b69d542e7790cf1c9927f57a6a0162e9acffb7b5f7eb"
   license "MIT"
 
+  bottle do
+    root_url "https://ghcr.io/v2/amrkmn/bun"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "fce4b60220fbf9f16b22ce815f880261bbe2006dee912cdfddf5cee933375515"
+  end
+
   depends_on "node" => :build
 
   def install
