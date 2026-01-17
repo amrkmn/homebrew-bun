@@ -41,7 +41,56 @@ jobs:
               run: |
                   jq -c '.[] | select(.status != "skipped") | select(.version.latest != .version.current)' livecheck.json | while read -r formula; do
                   name="$(echo "$formula" | jq -r .formula)"
+                  current_ver="$(echo "$formula" | jq -r .version.current)"
                   new_ver="$(echo "$formula" | jq -r .version.latest)"
+                  
+                  # Special handling for 'bun' to archive the current version
+                  if [[ "$name" == "bun" ]]; then
+                    echo "Processing version archive for bun ${current_ver}..."
+                    versioned_name="bun@${current_ver}"
+                    versioned_file="Formula/${versioned_name}.rb"
+                    
+                    # Clean version string for class name (remove dots, hyphens)
+                    class_suffix=$(echo "$current_ver" | tr -d '.-')
+                    class_name="BunAT${class_suffix}"
+                    
+                    # Check if versioned file already exists
+                    if [[ ! -f "$versioned_file" ]]; then
+                      echo "Archiving current bun version to $versioned_file"
+                      cp Formula/bun.rb "$versioned_file"
+                      
+                      # Update class name
+                      sed -i "s/class Bun /class ${class_name} /" "$versioned_file"
+                      
+                      # Create branch and PR for the archived version
+                      archive_branch="archive-bun-${current_ver}"
+                      
+                      # Only proceed if remote branch doesn't exist
+                      if ! git ls-remote --heads origin "$archive_branch" | grep -q .; then
+                        # Configure git if not already configured by action
+                        git config user.name "BrewTestBot"
+                        git config user.email "BrewTestBot@users.noreply.github.com"
+                        
+                        git checkout -b "$archive_branch"
+                        git add "$versioned_file"
+                        git commit -m "Add ${versioned_name} formula"
+                        git push origin "$archive_branch"
+                        
+                        gh pr create \
+                          --title "Add ${versioned_name} formula" \
+                          --body "Archives bun version ${current_ver} as ${versioned_name}" \
+                          --head "$archive_branch" \
+                          --base main
+                          
+                        # Switch back to main (or detached head) for the bump
+                        git checkout -
+                      else
+                        echo "Branch $archive_branch already exists, skipping archive PR"
+                      fi
+                    else
+                      echo "$versioned_file already exists, skipping archive"
+                    fi
+                  fi
                   
                   # Skip if branch already exists remotely
                   if git ls-remote --heads origin "bump-${name}-${new_ver}" | grep -q .; then
@@ -52,7 +101,7 @@ jobs:
                   brew bump-formula-pr \
                     --no-audit --no-browse --force \
                     --version="$new_ver" \
-                    "amrkmn/tap/${name}"
+                    "amrkmn/bun/${name}"
                   done
               env:
                   HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GH_TOKEN }}
