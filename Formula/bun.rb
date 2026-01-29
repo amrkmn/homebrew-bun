@@ -1,8 +1,8 @@
 class Bun < Formula
   desc "Incredibly fast JavaScript runtime, bundler, and package manager"
   homepage "https://bun.sh/"
-  url "https://registry.npmjs.org/bun/-/bun-1.3.7.tgz"
-  sha256 "a5b4a081d7cbe00feec3485ae8fe8f6637c2593a31b215227130bfbf4d3ffbae"
+  url "https://registry.npmjs.org/bun/-/bun-1.3.8.tgz"
+  sha256 "75d8ebd230aae5619ad07c3fb25bfc5e3bb7e92dbaa1f8de5b34e3fefca6be1d"
   license "MIT"
 
   bottle do
