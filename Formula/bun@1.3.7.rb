@@ -7,7 +7,7 @@ class BunAT137 < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/amrkmn/bun"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "2107f6398a67d915cac668f173708698a692eb429bab1e6c29eaf615c3e2391f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "40a3e95653b5bbeefa1df46c32209ef67469f6a65c82c50f14ee4d61b50ac927"
   end
 
   depends_on "node" => :build
