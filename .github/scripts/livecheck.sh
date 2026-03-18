@@ -95,10 +95,6 @@ main() {
     
     echo "Processing bun update: $current_ver -> $new_ver"
     
-    # 1. Archive the current (old) version
-    create_archive_formula "$current_ver"
-    
-    # 2. Create the new version formula
     create_new_formula "$new_ver"
   done
 }
