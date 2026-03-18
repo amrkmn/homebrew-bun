@@ -60,9 +60,6 @@ create_new_formula() {
   echo "SHA256: $sha256"
   sed -i "s/sha256 \".*\"/sha256 \"${sha256}\"/" "$versioned_file"
   
-  # Remove bottle block since old bottles won't work with new version
-  sed -i '/bottle do/,/end/d' "$versioned_file"
-  
   echo "Successfully created $versioned_file"
 }
 
