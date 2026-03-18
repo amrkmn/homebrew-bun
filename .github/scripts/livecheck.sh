@@ -80,12 +80,7 @@ main() {
     exit 1
   fi
   
-  # Use a temporary file to store the input to avoid pipe subshell issues
-  local input_file=$(mktemp)
-  cat > "$input_file"
-  
-  # Iterate over the JSON array
-  jq -c '.[] | select(.status != "versioned") | select((.status and .status != "skipped") or (.version and .version.outdated))' "$input_file" | while read -r formula; do
+  while IFS= read -r formula; do
     local name
     name=$(echo "$formula" | jq -r '.formula')
     local current_ver
@@ -106,8 +101,6 @@ main() {
     # 2. Create the new version formula
     create_new_formula "$new_ver"
   done
-  
-  rm -f "$input_file"
 }
 
 main "$@"
