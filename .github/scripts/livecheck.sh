@@ -85,7 +85,7 @@ main() {
   cat > "$input_file"
   
   # Iterate over the JSON array
-  jq -c '.[] | select(.status != "skipped") | select(.version.latest != .version.current)' "$input_file" | while read -r formula; do
+  jq -c '.[] | select(.status != "versioned") | select((.status and .status != "skipped") or (.version and .version.outdated))' "$input_file" | while read -r formula; do
     local name
     name=$(echo "$formula" | jq -r '.formula')
     local current_ver

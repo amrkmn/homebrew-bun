@@ -30,7 +30,7 @@ jobs:
             - name: Run livecheck
               run: |
                   brew livecheck --tap="$GITHUB_REPOSITORY" --json > livecheck.json
-                  jq -c '.[] | select(.status != "skipped") | select(.version.latest != .version.current)' livecheck.json
+                  jq -c '.[] | select(.status != "versioned") | select((.status and .status != "skipped") or (.version and .version.outdated))' livecheck.json
 
             - name: Configure Git user
               uses: Homebrew/actions/git-user-config@main
@@ -40,14 +40,14 @@ jobs:
             - name: Create versioned formulae
               run: |
                   # Use the livecheck script to create versioned formulae
-                  jq -c '.[] | select(.status != "skipped") | select(.version.latest != .version.current)' livecheck.json | .github/scripts/livecheck.sh
+                  jq -c '.[] | select(.status != "versioned") | select((.status and .status != "skipped") or (.version and .version.outdated))' livecheck.json | .github/scripts/livecheck.sh
               
             - name: Create PRs for versioned formulae
               run: bash .github/scripts/create-prs.sh
               
             - name: Bump outdated formulae
               run: |
-                  jq -c '.[] | select(.status != "skipped") | select(.version.latest != .version.current)' livecheck.json | while read -r formula; do
+                  jq -c '.[] | select(.status != "versioned") | select((.status and .status != "skipped") or (.version and .version.outdated))' livecheck.json | while read -r formula; do
                   name="$(echo "$formula" | jq -r .formula)"
                   new_ver="$(echo "$formula" | jq -r .version.latest)"
                   
