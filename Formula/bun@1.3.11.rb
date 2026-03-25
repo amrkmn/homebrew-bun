@@ -4,6 +4,7 @@ class BunAT1311 < Formula
   url "https://registry.npmjs.org/bun/-/bun-1.3.11.tgz"
   sha256 "83cb4f74272d21fdfc001b1c0cb9ea0d6a07af741409d49153a31687e03c01e8"
   license "MIT"
+  revision 1
 
   bottle do
     root_url "https://ghcr.io/v2/amrkmn/bun"
