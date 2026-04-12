@@ -7,9 +7,9 @@ class BunAT1312 < Formula
   revision 1
 
   bottle do
-    root_url "https://registry.npmjs.org/bun/-/bun-1.3.12.tgz"
-    sha256 cellar: :any_skip_relocation, arm64_linux:  "9cd9835a066bbbfe8d0d3482c57c1a12b75fa35ea064312298bb7d675165ee7c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "8a64f1158f44942d9395f3ea516a7ce04d4ca451ef419386707a1a34efe5d261"
+    root_url "https://ghcr.io/v2/amrkmn/bun"
+    sha256 cellar: :any_skip_relocation, arm64_linux:  "a8c0d5be6bc0cc553ae67cbf573373ce15b832d36cdb9690fe13affa32609d9c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "1882203ae1db3a3279c4936d406592bfb6f543adafe45d4ed5be2b48a5a4904e"
   end
 
   depends_on "node" => :build
