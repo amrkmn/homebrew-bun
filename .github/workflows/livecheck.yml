@@ -40,19 +40,19 @@ jobs:
             - name: Bump outdated formulae
               run: |
                   jq -c '.[] | select(.status != "versioned") | select((.status and .status != "skipped") or (.version and .version.outdated))' livecheck.json | while read -r formula; do
-                  name="$(echo "$formula" | jq -r .formula)"
-                  new_ver="$(echo "$formula" | jq -r .version.latest)"
+                    name="$(echo "$formula" | jq -r .formula)"
+                    new_ver="$(echo "$formula" | jq -r .version.latest)"
 
-                  # Skip if branch already exists remotely
-                  if git ls-remote --heads origin "bump-${name}-${new_ver}" | grep -q .; then
-                    echo "Skipping $name $new_ver - branch already exists"
-                    continue
-                  fi
+                    # Skip if branch already exists remotely
+                    if git ls-remote --heads origin "bump-${name}-${new_ver}" | grep -q .; then
+                      echo "Skipping $name $new_ver - branch already exists"
+                      continue
+                    fi
 
-                  brew bump-formula-pr \
-                    --no-audit --no-browse --force \
-                    --version="$new_ver" \
-                    "amrkmn/bun/${name}"
+                    brew bump-formula-pr \
+                      --no-audit --no-browse --force \
+                      --version="$new_ver" \
+                      "amrkmn/bun/${name}"
                   done
               env:
                   HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GH_TOKEN }}
