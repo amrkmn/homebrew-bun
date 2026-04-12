@@ -37,16 +37,6 @@ jobs:
               with:
                   username: BrewTestBot
 
-            - name: Create versioned formulae
-              run: |
-                  # Use the livecheck script to create versioned formulae
-                  jq -c '.[] | select(.status != "versioned") | select((.status and .status != "skipped") or (.version and .version.outdated))' livecheck.json | .github/scripts/livecheck.sh
-
-            - name: Create PRs for versioned formulae
-              env:
-                  GH_TOKEN: ${{ secrets.GH_TOKEN }}
-              run: bash .github/scripts/create-prs.sh
-
             - name: Bump outdated formulae
               run: |
                   jq -c '.[] | select(.status != "versioned") | select((.status and .status != "skipped") or (.version and .version.outdated))' livecheck.json | while read -r formula; do
@@ -67,3 +57,13 @@ jobs:
               env:
                   HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GH_TOKEN }}
                   GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+            - name: Create versioned formulae
+              run: |
+                  # Use the livecheck script to create versioned formulae
+                  jq -c '.[] | select(.status != "versioned") | select((.status and .status != "skipped") or (.version and .version.outdated))' livecheck.json | .github/scripts/livecheck.sh
+
+            - name: Create PRs for versioned formulae
+              env:
+                  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+              run: bash .github/scripts/create-prs.sh
