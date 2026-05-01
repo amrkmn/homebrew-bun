@@ -8,8 +8,8 @@ class BunAT135 < Formula
 
   bottle do
     root_url "https://ghcr.io/v2/amrkmn/bun"
-    sha256 cellar: :any_skip_relocation, arm64_linux:  "e980220ac18b5beaa2f11696e98bc5f67eca846e24748ce86df193f6ebc763fc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "a3f8e6bfb518aeb9a6d5d45f8aeb2e58ae629d55ac47732007e928a90d9ed6f3"
+    sha256 cellar: :any_skip_relocation, arm64_linux:  "0020f16ec51f2161e98f349858ca321a2c76f730b936728ec5d304a6642a2649"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "f6d425dc1dc2dee9b44aa6c2b8de484d769bedbe599a887133fc0d0b671ed2f0"
   end
 
   keg_only :versioned_formula
