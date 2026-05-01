@@ -4,13 +4,15 @@ class BunAT139 < Formula
   url "https://registry.npmjs.org/bun/-/bun-1.3.9.tgz"
   sha256 "a2a76deff7abf58268ad55dac46d8214177d3cd4f841947eb4ad538f7cff92e1"
   license "MIT"
-  revision 1
+  revision 2
 
   bottle do
     root_url "https://ghcr.io/v2/amrkmn/bun"
     sha256 cellar: :any_skip_relocation, arm64_linux:  "96a28981b0ab311287339e3a04ca397d76ba8098751cec0bb330e689e390c597"
     sha256 cellar: :any_skip_relocation, x86_64_linux: "ad7d5631709487ff217c781fa58c3ae629717321d8037b69b2a181f2901d175c"
   end
+
+  keg_only :versioned_formula
 
   depends_on "node" => :build
 
