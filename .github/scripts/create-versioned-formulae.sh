@@ -41,6 +41,18 @@ create_new_formula() {
   echo "SHA256: $sha256"
   sed -i "s/sha256 \".*\"/sha256 \"${sha256}\"/" "$versioned_file"
 
+  if ! grep -q '^  keg_only :versioned_formula$' "$versioned_file"; then
+    awk '
+      /^  depends_on "node" => :build$/ && !inserted {
+        print "  keg_only :versioned_formula"
+        print ""
+        inserted=1
+      }
+      { print }
+    ' "$versioned_file" > "${versioned_file}.tmp"
+    mv "${versioned_file}.tmp" "$versioned_file"
+  fi
+
   echo "Successfully created $versioned_file"
 }
 
